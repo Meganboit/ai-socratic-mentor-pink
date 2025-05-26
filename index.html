@@ -1,0 +1,96 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Socratic Mentor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f8d7ef, #dcd6f7);
+      font-family: 'Comic Neue', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #4a148c;
+    }
+    .chat-container {
+      background: #fff0f6;
+      border-radius: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      background: #fbe9f3;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .chat-box p {
+      margin: 5px 0;
+    }
+    input[type="text"] {
+      width: calc(100% - 22px);
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #f48fb1;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ec407a;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-box" id="chat"></div>
+    <input type="text" id="userInput" placeholder="Ask your question...">
+    <button onclick="askQuestion()">Ask Mentor</button>
+  </div>
+
+  <script>
+    async function askQuestion() {
+      const input = document.getElementById("userInput");
+      const chat = document.getElementById("chat");
+      const question = input.value.trim();
+      if (!question) return;
+
+      chat.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
+      input.value = "";
+
+      const response = await getSocraticAnswer(question);
+      chat.innerHTML += `<p><strong>Mentor:</strong> ${response}</p>`;
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function getSocraticAnswer(question) {
+      // Simulate Socratic questioning
+      if (question.toLowerCase().includes("truth")) {
+        return "What do you think makes something true? Can truth change depending on perspective?";
+      } else if (question.toLowerCase().includes("life")) {
+        return "How would you define a meaningful life? What do you think contributes to it?";
+      } else if (question.toLowerCase().includes("happiness")) {
+        return "What does happiness mean to you? Is it a goal or a byproduct of something else?";
+      } else {
+        return "Why do you think that is important? Can you think of a different point of view?";
+      }
+    }
+  </script>
+</body>
+</html>
