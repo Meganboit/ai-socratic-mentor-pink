@@ -1,5 +1,4 @@
 
-<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,7 +32,20 @@
       padding: 10px;
     }
     .chat-box p {
-      margin: 5px 0;
+      background: #fce4ec;
+      padding: 10px;
+      border-radius: 15px;
+      margin: 10px 0;
+      max-width: 85%;
+    }
+    .chat-box .user {
+      background: #e1bee7;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .chat-box .mentor {
+      background: #f8bbd0;
+      align-self: flex-start;
     }
     input[type="text"] {
       width: calc(100% - 22px);
@@ -59,38 +71,55 @@
 </head>
 <body>
   <div class="chat-container">
+    <img src="https://i.imgur.com/H1a1aYF.png" alt="Mentor Avatar" style="width: 60px; border-radius: 50%; margin-bottom: 10px;">
     <div class="chat-box" id="chat"></div>
     <input type="text" id="userInput" placeholder="Ask your question...">
     <button onclick="askQuestion()">Ask Mentor</button>
+    <audio id="ping" src="https://www.soundjay.com/buttons/sounds/button-09.mp3" preload="auto"></audio>
   </div>
 
   <script>
+    const input = document.getElementById("userInput");
+    const chat = document.getElementById("chat");
+    const audio = document.getElementById("ping");
+
     async function askQuestion() {
-      const input = document.getElementById("userInput");
-      const chat = document.getElementById("chat");
       const question = input.value.trim();
       if (!question) return;
 
-      chat.innerHTML += `<p><strong>You:</strong> ${question}</p>`;
+      chat.innerHTML += `<p class='user'><strong>You:</strong> ${question}</p>`;
       input.value = "";
+      chat.scrollTop = chat.scrollHeight;
+
+      chat.innerHTML += `<p class='mentor' id='typing'><strong>Mentor:</strong> ...</p>`;
 
       const response = await getSocraticAnswer(question);
-      chat.innerHTML += `<p><strong>Mentor:</strong> ${response}</p>`;
-      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(() => {
+        document.getElementById("typing").innerHTML = `<strong>Mentor:</strong> ${response}`;
+        audio.play();
+        chat.scrollTop = chat.scrollHeight;
+      }, 1000);
     }
 
     async function getSocraticAnswer(question) {
-      // Simulate Socratic questioning
-      if (question.toLowerCase().includes("truth")) {
+      const q = question.toLowerCase();
+
+      if (q.includes("truth")) {
         return "What do you think makes something true? Can truth change depending on perspective?";
-      } else if (question.toLowerCase().includes("life")) {
+      } else if (q.includes("life")) {
         return "How would you define a meaningful life? What do you think contributes to it?";
-      } else if (question.toLowerCase().includes("happiness")) {
+      } else if (q.includes("happiness")) {
         return "What does happiness mean to you? Is it a goal or a byproduct of something else?";
+      } else if (q.includes("success")) {
+        return "What does success mean to you personally? Is it something you define or others do?";
+      } else if (q.includes("fear")) {
+        return "What do you think fear teaches us? Can fear sometimes be useful?";
+      } else if (q.includes("friendship")) {
+        return "What makes a friendship strong? Is it time, trust, or something else?";
+      } else if (q.includes("knowledge")) {
+        return "How do we know what we know? Can knowledge exist without experience?";
       } else {
         return "Why do you think that is important? Can you think of a different point of view?";
       }
     }
-  </script>
-</body>
-</html>
