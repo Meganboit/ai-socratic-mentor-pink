@@ -3,105 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Math Mentor Chat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet" />
+  <title>AI Math Mentor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
   <style>
+    /* Background and font */
     body {
       margin: 0;
-      background-color: #0b1e4d; /* Dark blue */
       font-family: 'Comic Neue', cursive;
+      background-color: #0a1e4d; /* Dark blue */
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: #f0e6fa;
+      color: #eee;
     }
+
+    /* Chat container */
     .chat-container {
-      background: #122a6f;
-      width: 400px;
-      max-width: 95vw;
+      background: #152c6b;
       border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 0 20px #3b3e99cc;
+      padding: 25px 30px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 20px rgba(255 182 193 / 0.6);
       display: flex;
       flex-direction: column;
+      box-sizing: border-box;
     }
+
+    /* Title */
     h1 {
       text-align: center;
       margin-bottom: 15px;
+      font-weight: 700;
+      font-size: 28px;
       color: #ffc0cb; /* pastel pink */
+      text-shadow: 0 0 6px #ffb6c1cc;
     }
+
+    /* Chat display box */
     .chat-box {
-      flex-grow: 1;
-      background: #0a1941;
+      background: #0f2045;
       border-radius: 15px;
       padding: 15px;
+      height: 350px;
       overflow-y: auto;
-      max-height: 400px;
-      box-shadow: inset 0 0 10px #191f4a;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 15px;
+      box-shadow: inset 0 0 15px #3a3f87;
     }
+
+    /* Chat message base */
     .chat-message {
       max-width: 75%;
-      padding: 10px 15px;
-      margin-bottom: 10px;
+      padding: 12px 18px;
       border-radius: 20px;
-      line-height: 1.3;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      line-height: 1.4;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
       word-wrap: break-word;
+      white-space: pre-wrap;
     }
-    .mentor {
-      background-color: #ffb6c1; /* pastel pink */
-      color: #3b003b;
-      align-self: flex-start;
-    }
-    .user {
-      background-color: #d8bfd8; /* pastel purple */
-      color: #30003b;
+
+    /* User messages - pastel purple */
+    .chat-message.user {
+      background-color: #c1a9f0;
       align-self: flex-end;
-      text-align: right;
+      color: #230048;
+      font-weight: 600;
     }
-    input[type="text"] {
-      padding: 12px;
-      border-radius: 15px;
-      border: none;
-      margin-top: 15px;
-      font-size: 16px;
+
+    /* Mentor messages - pastel pink */
+    .chat-message.mentor {
+      background-color: #ffc0cb;
+      align-self: flex-start;
+      color: #5a003d;
+      font-weight: 600;
+      box-shadow: 0 0 8px #ff9bbd;
+    }
+
+    /* Input area */
+    #userInput {
       width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 2px solid #ffc0cb;
+      font-size: 18px;
+      font-family: 'Comic Neue', cursive;
+      outline: none;
       box-sizing: border-box;
+      color: #230048;
     }
-    input[type="text"]:focus {
-      outline: 2px solid #ffb6c1;
+
+    #userInput::placeholder {
+      color: #a67fb3;
+      font-style: italic;
     }
+
+    /* Button */
     button {
       margin-top: 10px;
-      padding: 12px;
-      border-radius: 15px;
+      width: 100%;
+      background-color: #ffc0cb;
       border: none;
-      background-color: #ffb6c1;
-      color: #3b003b;
-      font-weight: bold;
-      font-size: 16px;
+      padding: 14px 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #5a003d;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
+      font-family: 'Comic Neue', cursive;
+      box-shadow: 0 0 10px #ffb6c1cc;
     }
+
     button:hover {
-      background-color: #ff90a0;
+      background-color: #ff9bbd;
+    }
+
+    /* Scrollbar styling for chat box */
+    .chat-box::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb {
+      background-color: #a67fb3aa;
+      border-radius: 4px;
+    }
+
+    .chat-box::-webkit-scrollbar-track {
+      background-color: #0f2045;
     }
   </style>
 </head>
 <body>
   <div class="chat-container">
-    <h1>Math Mentor</h1>
-    <div id="chat" class="chat-box"></div>
-    <input id="userInput" type="text" placeholder="Ask me a math question..." autocomplete="off" />
-    <button onclick="askMentor()">Ask</button>
+    <h1>Your Friendly Math Mentor</h1>
+    <div class="chat-box" id="chat"></div>
+    <input type="text" id="userInput" placeholder="Ask me a math question..." autocomplete="off" />
+    <button onclick="askMentor()">Ask Mentor</button>
   </div>
 
   <script>
     const chat = document.getElementById('chat');
     const input = document.getElementById('userInput');
 
-    // Escape HTML to avoid injection
+    // Escape to avoid HTML injection
     function escapeHtml(text) {
       return text.replace(/&/g, "&amp;")
                  .replace(/</g, "&lt;")
@@ -110,77 +158,126 @@
                  .replace(/'/g, "&#039;");
     }
 
-    function askMentor() {
-      const question = input.value.trim();
-      if (!question) return;
-
-      // Show user's question
-      addMessage(escapeHtml(question), 'user');
-
-      input.value = '';
-      input.focus();
-
-      // Get mentor's answer and show it immediately (no ellipsis)
-      const answer = getMathAnswer(question);
-      addMessage(answer, 'mentor');
-
-      // Scroll chat to bottom
-      chat.scrollTop = chat.scrollHeight;
-    }
-
+    // Add message to chat
     function addMessage(text, sender) {
       const p = document.createElement('p');
       p.classList.add('chat-message', sender);
       p.innerHTML = text;
       chat.appendChild(p);
+      chat.scrollTop = chat.scrollHeight;
     }
 
-    function getMathAnswer(question) {
+    // Handle mentor response
+    function askMentor() {
+      const question = input.value.trim();
+      if (!question) return;
+      addMessage(escapeHtml(question), 'user');
+      input.value = '';
+
+      // Get mentor reply and add with slight delay for realism
+      setTimeout(() => {
+        const answer = getMentorReply(question);
+        addMessage(answer, 'mentor');
+      }, 600);
+    }
+
+    // Mentor logic — interactive, friendly, encouraging follow-ups
+    function getMentorReply(question) {
       const q = question.toLowerCase();
 
+      // Helper for random pick
+      function randomPick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
       if (q.includes('algebra')) {
-        return "Algebra helps us find unknown values. What equation are you working on?";
-      } 
+        return randomPick([
+          "Algebra is like solving a puzzle! Which part would you like help with? Equations, expressions, or something else?",
+          "Can you tell me the equation you're working on? Let's solve it step-by-step.",
+          "What do you understand about variables and constants so far?"
+        ]);
+      }
       else if (q.includes('quadratic')) {
-        return "Quadratic equations look like ax² + bx + c = 0. Have you tried factoring or using the quadratic formula?";
-      } 
+        return randomPick([
+          "Quadratic equations can be tricky but fun! Do you want to try factoring or use the quadratic formula?",
+          "What’s the quadratic equation you're working on? Let's analyze it together.",
+          "Have you tried plotting its graph? What does the parabola look like?"
+        ]);
+      }
       else if (q.includes('geometry')) {
-        return "Geometry deals with shapes and their properties. What shape or theorem do you need help with?";
-      } 
+        return randomPick([
+          "Geometry is all about shapes and their properties! What topic are you studying? Triangles, circles, or something else?",
+          "Are you working on angle problems, area, or volume? Let me know so I can guide you.",
+          "Can you describe the problem or share what you know about the figure?"
+        ]);
+      }
       else if (q.includes('fraction')) {
-        return "Fractions can be tricky! Are you adding, subtracting, multiplying, or dividing them?";
-      } 
+        return randomPick([
+          "Fractions can be confusing but let's break them down! Are you adding, subtracting, multiplying, or dividing?",
+          "Tell me your fraction problem, and I'll help you step-by-step.",
+          "Have you tried finding a common denominator yet? That’s usually a good start."
+        ]);
+      }
       else if (q.includes('percentage')) {
-        return "Percentages relate parts to a whole. What percentage problem are you trying to solve?";
-      } 
+        return randomPick([
+          "Percentages are parts of 100. What are you trying to find? The percentage, the whole, or the part?",
+          "Need help converting between decimals, fractions, and percentages? I’m here for you!",
+          "Share your problem, and we'll solve it together!"
+        ]);
+      }
       else if (q.includes('linear')) {
-        return "Linear equations graph as straight lines. Do you want help with slope, intercept, or graphing?";
-      } 
+        return randomPick([
+          "Linear equations graph as straight lines. Are you working on slope, intercept, or something else?",
+          "Have you tried plotting points on a graph? It really helps visualize the problem.",
+          "What’s the linear equation you’re studying? Let’s break it down."
+        ]);
+      }
       else if (q.includes('probability')) {
-        return "Probability is about chances and outcomes. What scenario are you analyzing?";
-      } 
+        return randomPick([
+          "Probability is about chance. Are you working on simple or compound events?",
+          "Tell me your problem and I'll help explain how to calculate the probabilities.",
+          "Remember: probability values are always between 0 and 1. Does your problem follow this?"
+        ]);
+      }
       else if (q.includes('exponent') || q.includes('power')) {
-        return "Exponents represent repeated multiplication. Need help simplifying or solving an expression?";
-      } 
+        return randomPick([
+          "Exponents are repeated multiplication. Are you simplifying expressions or solving equations?",
+          "Do you know the rules for multiplying or dividing powers? I can explain if you'd like!",
+          "Show me your expression and let's work through it."
+        ]);
+      }
       else if (q.includes('solve')) {
-        return "Let's solve it step by step. Can you share the full problem?";
+        return randomPick([
+          "Let’s solve it together! What’s the full problem?",
+          "Have you tried isolating the variable? Tell me what steps you’ve done so far.",
+          "Take it step-by-step; I’ll guide you through any confusing parts."
+        ]);
       }
       else if (/\d/.test(q)) {
-        return "Thanks for your question! Could you please give more details or specify the math topic?";
+        return randomPick([
+          "Nice, I see numbers! Can you give me the full problem so I can help?",
+          "I’m here to assist. Please type out your math question fully.",
+          "Let's tackle this math problem together — what exactly are you working on?"
+        ]);
       }
       else {
-        return "Math can be challenging but fun! What topic or problem would you like help with?";
+        return randomPick([
+          "Math is an adventure! What topic are you curious about today?",
+          "Ask me any math question, and I’ll do my best to help you understand it.",
+          "I’m your friendly math mentor — what would you like to learn or practice?"
+        ]);
       }
     }
 
-    // Allow pressing Enter to send the question
-    input.addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
+    // Allow pressing Enter to ask question
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
         askMentor();
       }
     });
   </script>
 </body>
 </html>
+
 
