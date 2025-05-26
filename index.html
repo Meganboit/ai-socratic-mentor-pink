@@ -2,22 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Socratic Mentor</title>
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Math Mentor - CBE Curriculum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      background: linear-gradient(to bottom right, #f8d7ef, #dcd6f7);
-      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-      font-family: 'Comic Neue', cursive;
       margin: 0;
-      color: #4a148c;
+      font-family: 'Comic Neue', cursive;
+      background: linear-gradient(to bottom right, #cbe7ff, #d8b0ff);
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      color: #4a148c;
+      position: relative;
       animation: fadeIn 1.5s ease-in;
-      background-repeat: repeat;
     }
 
     @keyframes fadeIn {
@@ -25,14 +25,48 @@
       to { opacity: 1; }
     }
 
+    .butterflies {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .butterfly {
+      position: absolute;
+      width: 40px; height: 40px;
+      background: url('https://i.imgur.com/gcJXdkU.png') no-repeat center/contain;
+      animation-name: flutter;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes flutter {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(15deg); }
+    }
+
+    .butterfly:nth-child(1) { top: 10%; left: 15%; animation-duration: 5s; animation-delay: 0s; }
+    .butterfly:nth-child(2) { top: 40%; left: 80%; animation-duration: 6s; animation-delay: 1.5s; }
+    .butterfly:nth-child(3) { top: 75%; left: 30%; animation-duration: 4.5s; animation-delay: 0.7s; }
+    .butterfly:nth-child(4) { top: 55%; left: 60%; animation-duration: 5.5s; animation-delay: 2.3s; }
+    .butterfly:nth-child(5) { top: 25%; left: 45%; animation-duration: 6.2s; animation-delay: 1.1s; }
+
     .chat-container {
+      position: relative;
+      z-index: 1;
       background: #fff0f6;
       border-radius: 20px;
       padding: 20px;
       width: 90%;
       max-width: 550px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       animation: popIn 0.8s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     @keyframes popIn {
@@ -47,9 +81,12 @@
       border-radius: 10px;
       padding: 10px;
       margin-bottom: 12px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      font-size: 15px;
+      line-height: 1.4;
     }
 
     .chat-box p {
@@ -58,8 +95,8 @@
       border-radius: 20px;
       margin: 0;
       max-width: 85%;
-      line-height: 1.4;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      word-wrap: break-word;
     }
 
     .chat-box .user {
@@ -69,21 +106,24 @@
     }
 
     .chat-box .mentor {
-      background: #f8bbd0;
+      background: #d1c4e9;
       align-self: flex-start;
+      font-style: italic;
     }
 
     input[type="text"] {
       width: 100%;
       padding: 12px;
-      border: 2px solid #f48fb1;
+      border: 2px solid #ab47bc;
       border-radius: 10px;
       margin-bottom: 10px;
       font-size: 16px;
+      font-family: 'Comic Neue', cursive;
+      outline-color: #7b1fa2;
     }
 
     button {
-      background: #f48fb1;
+      background: #ab47bc;
       color: white;
       border: none;
       padding: 12px;
@@ -92,10 +132,12 @@
       font-size: 16px;
       cursor: pointer;
       transition: background 0.3s;
+      font-family: 'Comic Neue', cursive;
+      font-weight: 700;
     }
 
     button:hover {
-      background: #ec407a;
+      background: #7b1fa2;
     }
 
     .avatar {
@@ -110,15 +152,24 @@
       text-align: center;
       font-size: 24px;
       margin-bottom: 10px;
+      color: #6a1b9a;
     }
   </style>
 </head>
 <body>
+  <div class="butterflies">
+    <div class="butterfly"></div>
+    <div class="butterfly"></div>
+    <div class="butterfly"></div>
+    <div class="butterfly"></div>
+    <div class="butterfly"></div>
+  </div>
+
   <div class="chat-container">
-    <img src="https://i.imgur.com/H1a1aYF.png" alt="Mentor Avatar" class="avatar">
-    <h1>Ask Your Socratic Mentor</h1>
+    <img src="https://i.imgur.com/H1a1aYF.png" alt="Mentor Avatar" class="avatar" />
+    <h1>Ask Your Math Mentor (CBE)</h1>
     <div class="chat-box" id="chat"></div>
-    <input type="text" id="userInput" placeholder="Ask your question...">
+    <input type="text" id="userInput" placeholder="Type your math question..." />
     <button onclick="askQuestion()">Ask Mentor</button>
     <audio id="ping" src="https://www.soundjay.com/buttons/sounds/button-09.mp3" preload="auto"></audio>
   </div>
@@ -132,53 +183,76 @@
       const question = input.value.trim();
       if (!question) return;
 
-      chat.innerHTML += `<p class='user'><strong>You:</strong> ${question}</p>`;
+      chat.innerHTML += `<p class='user'><strong>You:</strong> ${escapeHtml(question)}</p>`;
       input.value = "";
       chat.scrollTop = chat.scrollHeight;
 
       chat.innerHTML += `<p class='mentor' id='typing'><strong>Mentor:</strong> ...</p>`;
+      chat.scrollTop = chat.scrollHeight;
 
-      const response = await getTeacherAnswer(question);
+      const response = await getMathAnswer(question);
 
       setTimeout(() => {
         document.getElementById("typing").innerHTML = `<strong>Mentor:</strong> ${response}`;
         audio.play();
         chat.scrollTop = chat.scrollHeight;
-      }, 1000);
+      }, 1200);
     }
 
-    async function getTeacherAnswer(question) {
+    // Math Mentor responses tailored for CBE topics
+    async function getMathAnswer(question) {
       const q = question.toLowerCase();
 
-      if (q.includes("truth")) {
-        return "That's a thoughtful question! What do you think makes something true? Could truth be different depending on who’s looking?";
-      } else if (q.includes("life")) {
-        return "Life is a big topic! How would you describe a life that's meaningful to you? What things make it feel worthwhile?";
-      } else if (q.includes("happiness")) {
-        return "Happiness means different things to people. What do you feel brings you happiness? Is it a feeling or something you work toward?";
-      } else if (q.includes("success")) {
-        return "Success can look different for everyone. What does success mean to you personally? How do you measure it?";
-      } else if (q.includes("fear")) {
-        return "Fear is natural and can teach us a lot. What do you think fear helps us understand? Can it sometimes protect or guide us?";
-      } else if (q.includes("friendship")) {
-        return "Good friendships are special. What qualities do you think make a friendship strong and lasting?";
-      } else if (q.includes("knowledge")) {
-        return "Knowledge is powerful! How do you think we gain knowledge? Can experience be as important as facts?";
+      if (q.includes("algebra")) {
+        return "Algebra is about finding the unknown. What equation or problem are you working on?";
+      } else if (q.includes("quadratic")) {
+        return "Quadratic equations have the form ax² + bx + c = 0. Have you tried factoring or using the quadratic formula?";
+      } else if (q.includes("geometry")) {
+        return "Geometry explores shapes and their properties. Which figure are you studying?";
+      } else if (q.includes("fraction")) {
+        return "Fractions can be tricky! What operation do you want help with — addition, subtraction, multiplication, or division?";
+      } else if (q.includes("percentage")) {
+        return "Percentages relate parts to a hundred. Do you need help converting or solving percentage problems?";
+      } else if (q.includes("linear")) {
+        return "Linear equations graph as straight lines. What slope or intercept values are you working with?";
+      } else if (q.includes("probability")) {
+        return "Probability is about chance. What event or outcomes are you analyzing?";
+      } else if (q.includes("exponent") || q.includes("powers")) {
+        return "Exponents show repeated multiplication. Do you want to simplify or solve an expression with exponents?";
+      } else if (q.includes("solve")) {
+        return "Let's break it down step-by-step. Can you share the full equation you're solving?";
+      } else if (q.match(/\d/)) {
+        return "Good question! Can you provide more details or the specific problem?";
       } else {
-        return "That's an interesting thought. Why do you think that matters? Can you explore it from a different angle?";
+        return "Math can be challenging but rewarding! What topic or problem do you want to explore today?";
       }
     }
 
+    // Escape HTML to keep chat safe
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, function(m) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[m];
+      });
+    }
+
+    // Random placeholder from math topics
     const starters = [
-      "What is something you believe strongly?",
-      "Can you explain what makes a good friend?",
-      "What does it mean to learn?",
-      "Is happiness something you find or create?"
+      "How do I solve a quadratic equation?",
+      "Explain fractions addition.",
+      "What is the Pythagorean theorem?",
+      "How to find the slope of a line?"
     ];
     input.placeholder = starters[Math.floor(Math.random() * starters.length)];
   </script>
 </body>
 </html>
+ 
 
 
 
