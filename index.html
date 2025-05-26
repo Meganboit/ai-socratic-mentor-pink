@@ -1,77 +1,104 @@
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Socratic Mentor</title>
-  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background: linear-gradient(to bottom right, #f8d7ef, #dcd6f7);
-      font-family: 'Comic Neue', cursive;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      color: #4a148c;
+      animation: fadeIn 1.5s ease-in;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .chat-container {
       background: #fff0f6;
       border-radius: 20px;
       padding: 20px;
       width: 90%;
-      max-width: 500px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 550px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      animation: popIn 0.8s ease-in-out;
     }
+
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
     .chat-box {
-      height: 300px;
+      height: 320px;
       overflow-y: auto;
-      margin-bottom: 10px;
       background: #fbe9f3;
       border-radius: 10px;
       padding: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
+
     .chat-box p {
       background: #fce4ec;
-      padding: 10px;
-      border-radius: 15px;
-      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      margin: 0;
       max-width: 85%;
+      line-height: 1.4;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
+
     .chat-box .user {
       background: #e1bee7;
       align-self: flex-end;
       text-align: right;
     }
+
     .chat-box .mentor {
       background: #f8bbd0;
       align-self: flex-start;
     }
+
     input[type="text"] {
-      width: calc(100% - 22px);
-      padding: 10px;
-      border: none;
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #f48fb1;
       border-radius: 10px;
       margin-bottom: 10px;
+      font-size: 16px;
     }
+
     button {
       background: #f48fb1;
       color: white;
       border: none;
-      padding: 10px;
+      padding: 12px;
       width: 100%;
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
+      transition: background 0.3s;
     }
+
     button:hover {
       background: #ec407a;
+    }
+
+    .avatar {
+      width: 60px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display: block;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <div class="chat-container">
-    <img src="https://i.imgur.com/H1a1aYF.png" alt="Mentor Avatar" style="width: 60px; border-radius: 50%; margin-bottom: 10px;">
+    <img src="https://i.imgur.com/H1a1aYF.png" alt="Mentor Avatar" class="avatar">
+    <h1>Ask Your Socratic Mentor</h1>
     <div class="chat-box" id="chat"></div>
     <input type="text" id="userInput" placeholder="Ask your question...">
     <button onclick="askQuestion()">Ask Mentor</button>
@@ -123,3 +150,15 @@
         return "Why do you think that is important? Can you think of a different point of view?";
       }
     }
+
+    const starters = [
+      "What is something you believe strongly?",
+      "Can you explain what makes a good friend?",
+      "What does it mean to learn?",
+      "Is happiness something you find or create?"
+    ];
+    input.placeholder = starters[Math.floor(Math.random() * starters.length)];
+  </script>
+</body>
+</html>
+
