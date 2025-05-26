@@ -1,4 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Socratic Mentor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f8d7ef, #dcd6f7);
+      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+      font-family: 'Comic Neue', cursive;
+      margin: 0;
+      color: #4a148c;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: fadeIn 1.5s ease-in;
+      background-repeat: repeat;
+    }
 
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .chat-container {
+      background: #fff0f6;
+      border-radius: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 550px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      animation: popIn 0.8s ease-in-out;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .chat-box {
+      height: 320px;
+      overflow-y: auto;
+      background: #fbe9f3;
+      border-radius: 10px;
       padding: 10px;
       margin-bottom: 12px;
       display: flex;
@@ -92,7 +138,7 @@
 
       chat.innerHTML += `<p class='mentor' id='typing'><strong>Mentor:</strong> ...</p>`;
 
-      const response = await getSocraticAnswer(question);
+      const response = await getTeacherAnswer(question);
 
       setTimeout(() => {
         document.getElementById("typing").innerHTML = `<strong>Mentor:</strong> ${response}`;
@@ -101,25 +147,25 @@
       }, 1000);
     }
 
-    async function getSocraticAnswer(question) {
+    async function getTeacherAnswer(question) {
       const q = question.toLowerCase();
 
       if (q.includes("truth")) {
-        return "What do you think makes something true? Can truth change depending on perspective?";
+        return "That's a thoughtful question! What do you think makes something true? Could truth be different depending on who’s looking?";
       } else if (q.includes("life")) {
-        return "How would you define a meaningful life? What do you think contributes to it?";
+        return "Life is a big topic! How would you describe a life that's meaningful to you? What things make it feel worthwhile?";
       } else if (q.includes("happiness")) {
-        return "What does happiness mean to you? Is it a goal or a byproduct of something else?";
+        return "Happiness means different things to people. What do you feel brings you happiness? Is it a feeling or something you work toward?";
       } else if (q.includes("success")) {
-        return "What does success mean to you personally? Is it something you define or others do?";
+        return "Success can look different for everyone. What does success mean to you personally? How do you measure it?";
       } else if (q.includes("fear")) {
-        return "What do you think fear teaches us? Can fear sometimes be useful?";
+        return "Fear is natural and can teach us a lot. What do you think fear helps us understand? Can it sometimes protect or guide us?";
       } else if (q.includes("friendship")) {
-        return "What makes a friendship strong? Is it time, trust, or something else?";
+        return "Good friendships are special. What qualities do you think make a friendship strong and lasting?";
       } else if (q.includes("knowledge")) {
-        return "How do we know what we know? Can knowledge exist without experience?";
+        return "Knowledge is powerful! How do you think we gain knowledge? Can experience be as important as facts?";
       } else {
-        return "Why do you think that is important? Can you think of a different point of view?";
+        return "That's an interesting thought. Why do you think that matters? Can you explore it from a different angle?";
       }
     }
 
@@ -133,5 +179,6 @@
   </script>
 </body>
 </html>
+
 
 
